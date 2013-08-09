@@ -60,11 +60,18 @@ suite('Money tests', function() {
 
   suite('Arithmetic tests', function() {
 
-    test('.add: expected usage', function() {
+    test('.add: expected usage, take 1', function() {
       var m0 = new Money(0.12345, BTC)
         , m1 = new Money(0.54321, BTC)
-        , sum = m0.add(m1);
-      assert.equal(sum.amount, 66666);
+        , m2 = m0.add(m1);
+      assert.equal(m2.amount, 66666);
+    });
+
+    test('.add: expected usage, take 2', function() {
+      var m0 = new Money(-0.12345, BTC)
+        , m1 = new Money(0.54321, BTC)
+        , m2 = m0.add(m1);
+      assert.equal(m2.amount, 41976);
     });
 
     test('.add: invalid parameter, take 1 (not an object)', function() {
@@ -89,11 +96,18 @@ suite('Money tests', function() {
       }, Error);
     });
 
-    test('.sub: expected usage', function() {
+    test('.sub: expected usage, take 1', function() {
       var m0 = new Money(0.12345, BTC)
         , m1 = new Money(0.54321, BTC)
-        , sub = m1.sub(m0);
-      assert.equal(sub.amount, 41976);
+        , m2 = m1.sub(m0);
+      assert.equal(m2.amount, 41976);
+    });
+
+    test('.sub: expected usage, take 2', function() {
+      var m0 = new Money(0.12345, BTC)
+        , m1 = new Money(-0.54321, BTC)
+        , m2 = m1.sub(m0);
+      assert.equal(m2.amount, -66666);
     });
 
     test('.sub: invalid parameter, take 1 (not an object)', function() {
@@ -118,6 +132,34 @@ suite('Money tests', function() {
       }, Error);
     });
 
+    test('.mult: expected usage, take 1', function() {
+      var m0 = new Money(0.12345, BTC)
+        , s0 = 1.05
+        , m1 = m0.mult(s0);
+      assert.equal(m1.amount, 12962);
+    });
+
+    test('.mult: expected usage, take 2', function() {
+      var m0 = new Money(0.12345, BTC)
+        , s0 = 0.33
+        , m1 = m0.mult(s0);
+      assert.equal(m1.amount, 4074);
+    });
+
+    test('.mult: expected usage, take 3', function() {
+      var m0 = new Money(0.12345, BTC)
+        , s0 = -1.45
+        , m1 = m0.mult(s0);
+      assert.equal(m1.amount, -17900);
+    });
+
+    test('.mult: invalid parameter, take 1 (not a number)', function() {
+      var m0 = new Money(0.12345, BTC);
+      assert.throws(function() {
+        return m0.mult(USD);
+      }, Error);
+    });
+
     test('.allocate: expected usage, take 1 (Matt Foemmel\'s conundrum)' , function() {
       var m0 = new Money(0.05, USD)
         , list = m0.allocate([3,7]);
@@ -136,7 +178,7 @@ suite('Money tests', function() {
 
   });
 
-  suite('Conversion tests', function() {
+  suite('Other tests', function() {
 
     test('.toNumber', function() {
       var c0 = new Currency('ESP', 1)
@@ -149,10 +191,6 @@ suite('Money tests', function() {
       assert.equal(m2.toNumber(), 843.32485);
       assert.equal(m3.toNumber(), 8764674.38);
     });
-
-  });
-
-  suite('Other tests', function() {
 
     test('common currency wrappers', function() {
       var m0 = money.euro(0.12)
