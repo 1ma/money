@@ -28,7 +28,7 @@ var heirs = netSum.allocate([4,3,2,1]);
 // heir[1]:    $ 255.555,56
 // heir[2]:    $ 170,370.36
 // heir[3]:  + $  85,185.18
-//           ---------------
+//           --------------
 // sum:        $ 851,851.84 (wow so money much precise)
 ```
 
