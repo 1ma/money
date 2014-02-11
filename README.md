@@ -1,7 +1,7 @@
 #money
 
 Node.js module to perform precise common money calculations.
-This library is a partial javascript implementation of Martin Fowler's [Money Pattern](http://martinfowler.com/eaaCatalog/money.html), as described in his book *Patterns of Enterprise Application Architecture*.
+This library is a partial javascript implementation of Martin Fowler's [Money Pattern](http://martinfowler.com/eaaCatalog/money.html) as described in his book *Patterns of Enterprise Application Architecture*.
 
 
 ## Using the library
@@ -17,19 +17,19 @@ var inheritance = money.dollar(1234567.89);
 var TAXMAN = 0.69;
 var netSum = inheritance.mult(TAXMAN);
 
-// netSum      $ 851,851.84
+// netSum:      $ 851,851.84
 
 
 // Hand out loot to heirs.
 // The oldest will receive 40% of the money, the next one 30% etc.
 var heirs = netSum.allocate([4,3,2,1]);
 
-// heir[0]:    $ 340.740,74
-// heir[1]:    $ 255.555,56
-// heir[2]:    $ 170,370.36
-// heir[3]:  + $  85,185.18
-//           --------------
-// sum:        $ 851,851.84 (wow so money much precise)
+// heirs[0]:    $ 340.740,74
+// heirs[1]:    $ 255.555,56
+// heirs[2]:    $ 170,370.36
+// heirs[3]:  + $  85,185.18
+//            --------------
+// sum:         $ 851,851.84 (wow so money much precise)
 ```
 
 ## Running the tests (*nix only)
