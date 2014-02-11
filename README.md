@@ -20,14 +20,15 @@ var netSum = inheritance.mult(TAXMAN);
 // netSum      $ 851,851.84
 
 
-// Hand out loot to heirs. The oldest will receive 40% of the money, the next one 30% etc.
+// Hand out loot to heirs.
+// The oldest will receive 40% of the money, the next one 30% etc.
 var heirs = netSum.allocate([4,3,2,1]);
 
 // heir[0]:    $ 340.740,74
 // heir[1]:    $ 255.555,56
 // heir[2]:    $ 170,370.36
 // heir[3]:  + $  85,185.18
-//            --------------
+//           ---------------
 // sum:        $ 851,851.84 (wow so money much precise)
 ```
 
