@@ -1,36 +1,62 @@
-var assert = require('assert')
-  , money  = require('../lib-cov/money');
-
-var Money    = money.Money
-  , Currency = money.Currency
-  , EUR      = money.EUR
-  , USD      = money.USD
-  , BTC      = money.BTC;
+var assert = require('assert'),
+  money    = require('../lib-cov/money'),
+  Money    = money.Money,
+  Currency = money.Currency,
+  EUR      = money.EUR,
+  USD      = money.USD,
+  BTC      = money.BTC;
 
 suite('Currency tests', function() {
+  suite('Constructor tests', function() {
+    var testValidCallOnConstructor = function(name, decimals) {
+      return function() {
+        var fineCurrency = new Currency(name, decimals);
+        assert.equal(fineCurrency.code, name);
+        assert.equal(fineCurrency.centFactor, Math.pow(10, decimals));
+      }
+    }
 
-  suite('Construction tests', function() {
+    var testPassBadArgumentToConstructor = function(name, decimals, regExp) {
+      return function() {
+        assert.throws(function() {
+          var badCurrency = new Currency(name, decimals);
+        }, regExp);
+      }
+    }
 
-    test('new Currency: expected usage', function() {
-      var c = new Currency('USD', 2);
-      assert.equal(c.code, 'USD');
-      assert.equal(c.centFactor, 100);
+
+    var dataProvider = [['BTC', 5], ['USD', 2], ['ESP', 0]];
+
+    dataProvider.forEach(function(args, count) {
+      test('new Currency: expected usage, take ' + count,
+        testValidCallOnConstructor(args[0], args[1])
+      );
     });
 
-    test('new Currency: invalid parameter, take 1 (1st argument not a string)', function() {
-      assert.throws(function() {
-        var m0 = new Currency(123, 456);
-      }, /Currency: First argument is not a string/);
+
+    dataProvider = [[undefined, 0], [null, 0], [{}, 0], [[], 0], [0, 0]];
+
+    dataProvider.forEach(function(args, count) {
+      test('new Currency: invalid first parameter, take ' + count,
+        testPassBadArgumentToConstructor(
+          args[0], args[1],
+          /Currency: First argument is not a string/
+        )
+      );
     });
 
-    test('new Currency: invalid parameter, take 2 (2nd argument not a number)', function() {
-      assert.throws(function() {
-        var m0 = new Currency('hello', 'world');
-      }, /Currency: Second argument is not a number/);
-    });
 
+    dataProvider = [['USD'], ['USD', null], ['USD', {}], ['USD', []], ['USD', 'USD']];
+
+    dataProvider.forEach(function(args, count) {
+      test('new Currency: invalid second parameter, take ' + count,
+        testPassBadArgumentToConstructor(
+          args[0], args[1],
+          /Currency: Second argument is not a number/
+        )
+      );
+    });
   });
-
 });
 
 suite('Money tests', function() {
