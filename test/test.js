@@ -28,31 +28,19 @@ suite('Currency tests', function() {
     var dataProvider = [['BTC', 5], ['USD', 2], ['ESP', 0]];
 
     dataProvider.forEach(function(args, count) {
-      test('new Currency: expected usage, take ' + count,
+      test('new Currency: correct usage, take ' + count,
         testValidCallOnConstructor(args[0], args[1])
       );
     });
 
 
-    dataProvider = [[undefined, 0], [null, 0], [{}, 0], [[], 0], [0, 0]];
+    dataProvider = [['LOL', -1]];
 
     dataProvider.forEach(function(args, count) {
-      test('new Currency: invalid first parameter, take ' + count,
+      test('new Currency: broken usage, take ' + count,
         testPassBadArgumentToConstructor(
           args[0], args[1],
-          /Currency: First argument is not a string/
-        )
-      );
-    });
-
-
-    dataProvider = [['USD'], ['USD', null], ['USD', {}], ['USD', []], ['USD', 'USD']];
-
-    dataProvider.forEach(function(args, count) {
-      test('new Currency: invalid second parameter, take ' + count,
-        testPassBadArgumentToConstructor(
-          args[0], args[1],
-          /Currency: Second argument is not a number/
+          /Currency: fractionDigits can\'t be lesser than 0/
         )
       );
     });
