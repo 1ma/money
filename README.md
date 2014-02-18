@@ -12,14 +12,12 @@ var money = require('path/to/lib/money.js');
 // Show me those monies
 var inheritance = money.dollar(1234567.89);
 
-
 // Subtract taxes
 var TAXMAN = 0.69;
 var netSum = inheritance.mult(TAXMAN);
 
-netSum.toNumber();
+console.log(netSum.toNumber());
 // 851851.84
-
 
 // Hand out loot to heirs.
 // The oldest will receive 40% of the money, the next one 30% etc.
@@ -32,8 +30,8 @@ heirs.forEach(function(heir) { console.log(heir.toNumber()); });
 // 85185.18
 
 var addBack = heirs[0].add(heirs[1]).add(heirs[2]).add(heirs[3]);
-addBack.toNumber() === netSum.toNumber();
-// true (wow so money much precise)
+assert.deepEqual(addBack, netSum);
+// undefined (wow so money much precise)
 ```
 
 ## Running the tests (*nix only)

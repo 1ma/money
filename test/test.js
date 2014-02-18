@@ -20,13 +20,13 @@ suite('Currency tests', function() {
     test('new Currency: invalid parameter, take 1 (1st argument not a string)', function() {
       assert.throws(function() {
         var m0 = new Currency(123, 456);
-      }, Error);
+      }, /Currency: First argument is not a string/);
     });
 
     test('new Currency: invalid parameter, take 2 (2nd argument not a number)', function() {
       assert.throws(function() {
         var m0 = new Currency('hello', 'world');
-      }, Error);
+      }, /Currency: Second argument is not a number/);
     });
 
   });
@@ -47,13 +47,13 @@ suite('Money tests', function() {
     test('new Money: invalid parameter, take 1 (1st argument not a number)', function() {
       assert.throws(function() {
         var m0 = new Money(BTC, 3);
-      }, Error);
+      }, /Money: First argument is not a number/);
     });
 
     test('new Money: invalid parameter, take 2 (2nd argument not a Currency object)', function() {
       assert.throws(function() {
         var m0 = new Money(123.45, [1,2,3]);
-      }, Error);
+      }, /Money: Second argument is not a currency object/);
     });
 
   });
@@ -78,22 +78,22 @@ suite('Money tests', function() {
       var m0 = new Money(0.12345, BTC);
       assert.throws(function() {
         return m0.add(3.14159);
-      }, Error);
+      }, /Money.add: Argument is not a Money object/);
     });
 
     test('.add: invalid parameter, take 2 (not a Money object)', function() {
       var m0 = new Money(0.12345, BTC);
       assert.throws(function() {
         return m0.add(new Date());
-      }, Error);
+      }, /Money.add: Argument is not a Money object/);
     });
 
-    test('.add: invalid parameter, take 3 (different currency)', function() {
+    test('.add: invalid parameter, take 3 (different currencies)', function() {
       var m0 = new Money(0.12345, BTC)
         , m1 = new Money(13.37, USD);
       assert.throws(function() {
         return m0.add(m1);
-      }, Error);
+      }, /Money.add: Currencies differ/);
     });
 
     test('.sub: expected usage, take 1', function() {
@@ -114,22 +114,22 @@ suite('Money tests', function() {
       var m0 = new Money(0.12345, BTC);
       assert.throws(function() {
         return m0.sub(3.14159);
-      }, Error);
+      }, /Money.sub: Argument is not a Money object/);
     });
 
     test('.sub: invalid parameter, take 2 (not a Money object)', function() {
       var m0 = new Money(0.12345, BTC);
       assert.throws(function() {
         return m0.sub(new Date());
-      }, Error);
+      }, /Money.sub: Argument is not a Money object/);
     });
 
-    test('.sub: invalid parameter, take 3 (different currency)', function() {
+    test('.sub: invalid parameter, take 3 (different currencies)', function() {
       var m0 = new Money(0.12345, BTC)
         , m1 = new Money(10.01, EUR);
       assert.throws(function() {
         return m0.sub(m1);
-      }, Error);
+      }, /Money.sub: Currencies differ/);
     });
 
     test('.mult: expected usage, take 1', function() {
@@ -157,7 +157,7 @@ suite('Money tests', function() {
       var m0 = new Money(0.12345, BTC);
       assert.throws(function() {
         return m0.mult(USD);
-      }, Error);
+      }, /Money.mult: Argument is not a number/);
     });
 
     test('.allocate: expected usage, take 1 (Matt Foemmel\'s conundrum)' , function() {
