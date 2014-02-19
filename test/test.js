@@ -8,36 +8,38 @@ var assert = require('assert'),
 
 suite('Currency tests', function() {
   suite('Constructor tests', function() {
-    var testValidCallOnConstructor = function(name, decimals) {
+    var testValidCallOnConstructor = function(name, decimals, expectedCentFactor) {
       return function() {
         var fineCurrency = new Currency(name, decimals);
         assert.equal(fineCurrency.code, name);
-        assert.equal(fineCurrency.centFactor, Math.pow(10, decimals));
+        assert.equal(fineCurrency.centFactor, expectedCentFactor);
       }
     }
 
-    var testPassBadArgumentToConstructor = function(name, decimals, regExp) {
+    var testPassBadArgumentToConstructor = function(name, decimals, expectedRegExp) {
       return function() {
         assert.throws(function() {
           var badCurrency = new Currency(name, decimals);
-        }, regExp);
+        }, expectedRegExp);
       }
     }
 
-
-    var dataProvider = [['BTC', 5], ['USD', 2], ['ESP', 0]];
+    var dataProvider = [
+      ['BTC', 8, 100000000],
+      ['USD', 2,       100],
+      ['ESP', 0,         1]
+    ];
 
     dataProvider.forEach(function(args, count) {
       test('new Currency: correct usage, take ' + count,
-        testValidCallOnConstructor(args[0], args[1])
+        testValidCallOnConstructor(args[0], args[1], args[2])
       );
     });
-
 
     dataProvider = [['LOL', -1]];
 
     dataProvider.forEach(function(args, count) {
-      test('new Currency: broken usage, take ' + count,
+      test('new Currency: incorrect usage, take ' + count,
         testPassBadArgumentToConstructor(
           args[0], args[1],
           /Currency: fractionDigits can\'t be lesser than 0/
@@ -48,28 +50,29 @@ suite('Currency tests', function() {
 });
 
 suite('Money tests', function() {
-
   suite('Construction tests', function() {
+    var testValidCallOnConstructor = function(amount, currency, expectedStoredValue) {
+      return function() {
+        var fineMoney = new Money(amount, currency);
+        assert.equal(fineMoney.amount, expectedStoredValue);
+        assert.deepEqual(fineMoney.currency, currency);
+      }
+    }
 
-    test('new Money: expected usage', function() {
-      var m0 = new Money(0.12345, BTC);
-      assert.equal(m0.amount, 12345);
-      assert.equal(m0.currency.code, 'BTC');
-      assert.equal(m0.currency.centFactor, 100000);
+    var dataProvider = [
+      [          0, BTC,          0],
+      [    0.12345, BTC,      12345],
+      [     10.984, EUR,       1098],
+      [     10.985, EUR,       1099],
+      [    -892.93, USD,     -89293],
+      [-9839529.32, USD, -983952932]
+    ];
+
+    dataProvider.forEach(function(args, count){
+      test('new Money: correct usage, take ' + count,
+        testValidCallOnConstructor(args[0], args[1], args[2])
+      );
     });
-
-    test('new Money: invalid parameter, take 1 (1st argument not a number)', function() {
-      assert.throws(function() {
-        var m0 = new Money(BTC, 3);
-      }, /Money: First argument is not a number/);
-    });
-
-    test('new Money: invalid parameter, take 2 (2nd argument not a Currency object)', function() {
-      assert.throws(function() {
-        var m0 = new Money(123.45, [1,2,3]);
-      }, /Money: Second argument is not a currency object/);
-    });
-
   });
 
   suite('Arithmetic tests', function() {
