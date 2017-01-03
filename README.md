@@ -38,6 +38,6 @@ assert.deepEqual(addBack, netSum);
 
 1. Clone and install [node-jscoverage](https://github.com/visionmedia/node-jscoverage) in your system
 2. Enter the money repository and run `jscoverage lib/ lib-cov/` to instrument the library
-3. Install [Mocha](http://visionmedia.github.io/mocha) as a command via npm `sudo npm install -g mocha`
+3. Install [Mocha](http://mochajs.org/) as a command via npm `sudo npm install -g mocha`
   * a. To run the tests execute the following command: `mocha --ui tdd test/test.js`
   * b. To view a coverage report use the `html-cov` reporter: `mocha --ui tdd -R html-cov test/test.js > report.html` and open the HTML file with your browser of choice.
